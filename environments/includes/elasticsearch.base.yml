@@ -2,7 +2,8 @@ version: "3.5"
 services:
   elasticsearch:
     hostname: "${WARDEN_ENV_NAME}-elasticsearch"
-    image: ghcr.io/drpayyne/warden-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.4
+    #image: webhippie/elasticsearch:6.4
     labels:
       - traefik.enable=true
       - traefik.http.routers.${WARDEN_ENV_NAME}-elasticsearch.tls=true
@@ -15,14 +16,14 @@ services:
     volumes:
       - esdata:/usr/share/elasticsearch/data
 
-  # elasticsearch-hq:
-  #   hostname: "${WARDEN_ENV_NAME}-elasticsearch-hq"
-  #   image: elastichq/elasticsearch-hq:latest
-  #   labels:
-  #     - traefik.enable=true
-  #     - traefik.http.routers.${WARDEN_ENV_NAME}-elasticsearch-hq.tls=true
-  #     - traefik.http.routers.${WARDEN_ENV_NAME}-elasticsearch-hq.rule=Host(`elastichq.${TRAEFIK_DOMAIN}`)
-  #     - traefik.http.services.${WARDEN_ENV_NAME}-elasticsearch-hq.loadbalancer.server.port=5000
+  elasticsearch-hq:
+   hostname: "${WARDEN_ENV_NAME}-elasticsearch-hq"
+   image: elastichq/elasticsearch-hq:latest
+   labels:
+     - traefik.enable=true
+     - traefik.http.routers.${WARDEN_ENV_NAME}-elasticsearch-hq.tls=true
+     - traefik.http.routers.${WARDEN_ENV_NAME}-elasticsearch-hq.rule=Host(`elastichq.${TRAEFIK_DOMAIN}`)
+     - traefik.http.services.${WARDEN_ENV_NAME}-elasticsearch-hq.loadbalancer.server.port=5000
 
 volumes:
   esdata:

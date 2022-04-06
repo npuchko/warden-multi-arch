@@ -18,7 +18,11 @@ services:
 
   php-fpm:
     hostname: "${WARDEN_ENV_NAME}-php-fpm"
-    image: ghcr.io/drpayyne/warden-php-m2:${PHP_VERSION}-deb
+    #image: ghcr.io/drpayyne/warden-php-m2:${PHP_VERSION}-deb
+    build:
+      context: ${WARDEN_DIRECTORY}/custom/php-fpm
+      args:
+         - PHP_VERSION=${PHP_VERSION}
     environment:
       - TRAEFIK_DOMAIN
       - TRAEFIK_SUBDOMAIN
@@ -32,6 +36,7 @@ services:
       - WARDEN_RABBITMQ=${WARDEN_RABBITMQ:-}
       - WARDEN_REDIS=${WARDEN_REDIS:-}
       - WARDEN_ENV_NAME=${WARDEN_ENV_NAME:-}
+      - WARDEN_DIR=${WARDEN_DIR:-}
     volumes: *volumes
     extra_hosts: *extra_hosts
 
