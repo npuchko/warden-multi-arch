@@ -17,13 +17,10 @@ sudo mkdir /opt/warden
 sudo chown $(whoami) /opt/warden
 
 # Clone multi-arch fork of Warden (this repository) into the installation directory
-git clone https://github.com/drpayyne/warden-multi-arch.git /opt/warden
+git clone -b warden_for_mac_m1 git@github.com:npuchko/warden-multi-arch.git /opt/warden
 
-# Export Warden to PATH. (use your appropriate shell resource file; zshrc here.)
-echo 'export PATH="/opt/warden/bin:$PATH"' >> ~/.zshrc
-
-# Export Warden to current shell's PATH
-PATH="/opt/warden/bin:$PATH"
+# Create symlink to warden bin
+ln -s /usr/local/bin/warden /opt/warden/bin/warden
 
 # Create and start Warden services
 warden svc up
